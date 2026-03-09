@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Ceyda'ya Sevgilerle</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 25%, #f48fb1 50%, #ce93d8 75%, #e1bee7 100%);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    overflow: hidden;
+    position: relative;
+    padding: 20px;
+  }
+
+  @keyframes floatUp {
+    0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.2; }
+    50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    10% { transform: scale(1.2); }
+    20% { transform: scale(1); }
+    30% { transform: scale(1.15); }
+    40% { transform: scale(1); }
+  }
+
+  .sparkle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,182,193,0.3) 100%);
+    pointer-events: none;
+  }
+
+  .quote-card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 32px;
+    padding: 48px 40px;
+    max-width: 540px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    box-shadow:
+      0 8px 32px rgba(233, 30, 99, 0.15),
+      0 2px 8px rgba(255, 255, 255, 0.3) inset;
+    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+    animation-delay: 0.3s;
+  }
+
+  .title-text {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #e91e63, #9c27b0, #e91e63);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+    margin-bottom: 6px;
+  }
+
+  .heart-icon {
+    font-size: 32px;
+    display: block;
+    animation: heartbeat 2s ease-in-out infinite;
+    margin: 10px 0 16px;
+  }
+
+  .date-text {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(136, 14, 79, 0.55);
+    margin-bottom: 24px;
+  }
+
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #e91e63, transparent);
+    margin: 0 auto 24px;
+    border-radius: 2px;
+  }
+
+  .quote-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 24px;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.65;
+    color: #4a0e2e;
+    margin: 0 0 28px 0;
+    position: relative;
+    padding: 0 10px;
+  }
+
+  .quote-text::before {
+    content: '\201C';
+    font-size: 68px;
+    font-style: normal;
+    color: rgba(233, 30, 99, 0.13);
+    position: absolute;
+    top: -28px;
+    left: -8px;
+    font-family: 'Playfair Display', Georgia, serif;
+    line-height: 1;
+  }
+
+  .quote-text::after {
+    content: '\201D';
+    font-size: 68px;
+    font-style: normal;
+    color: rgba(233, 30, 99, 0.13);
+    position: absolute;
+    bottom: -48px;
+    right: -8px;
+    font-family: 'Playfair Display', Georgia, serif;
+    line-height: 1;
+  }
+
+  .emoji-author {
+    font-size: 34px;
+    display: block;
+    margin-top: 6px;
+  }
+
+  .footer-text {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    color: rgba(136, 14, 79, 0.4);
+    margin-top: 24px;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<div class="quote-card" id="card">
+  <div class="title-text">Günün Sözü</div>
+  <div class="heart-icon">💕</div>
+  <div class="date-text" id="date"></div>
+  <div class="divider"></div>
+  <p class="quote-text" id="quote"></p>
+  <div class="emoji-author" id="emoji"></div>
+  <div class="footer-text">Ceyda'ya sevgilerle ❤️</div>
+</div>
+
+<script>
+var quotes = [
+  { t: "Seninle her an, zamanın en güzel hali.", e: "💕" },
+  { t: "Gözlerinde kaybolmak, bulduğum en güzel adres.", e: "🌸" },
+  { t: "Sen benim en güzel tesadüfümsün.", e: "✨" },
+  { t: "Yanında olmak, dünyanın en kolay işi.", e: "🦋" },
+  { t: "Seninle güneş daha sıcak, yıldızlar daha yakın.", e: "🌙" },
+  { t: "Seni düşünmek, günün en tatlı molası.", e: "☕" },
+  { t: "Kalbim seni seçti, aklım onayladı.", e: "💫" },
+  { t: "Sen varken eksik olan hiçbir şey yok.", e: "🌷" },
+  { t: "Gülüşün, duyduğum en güzel melodi.", e: "🎶" },
+  { t: "Seninle her yer ev, her an bayram.", e: "🏡" },
+  { t: "Sen benim sakin fırtınam, huzurlu kaosımsın.", e: "🌊" },
+  { t: "Bir bakışın bin kelimeden değerli.", e: "👀" },
+  { t: "Seni sevmek, nefes almak kadar doğal.", e: "🍃" },
+  { t: "Hayat seninle bir film; en sevdiğim sahne hep şimdi.", e: "🎬" },
+  { t: "Sen olmadan günler takvimde boş sayfa.", e: "📖" },
+  { t: "Kollarında dünya dursa umurumda olmaz.", e: "🤍" },
+  { t: "Seninle tanışmak, hayatımın en iyi kararı değildi; en güzel sürpriziydi.", e: "🎁" },
+  { t: "Her sabah gözlerimi açınca ilk düşündüğüm sen oluyorsun.", e: "🌅" },
+  { t: "Sesini duymak, kötü bir günü iyi yapabilir.", e: "📞" },
+  { t: "Seninle gülmek, en sevdiğim spor.", e: "😄" },
+  { t: "Yanımda olman, sahip olduğum en büyük lüks.", e: "💎" },
+  { t: "Sen benim küçük evrenimsin.", e: "🪐" },
+  { t: "Seni seviyorum; bugün, yarın, her gün biraz daha fazla.", e: "❤️" },
+  { t: "Dokunuşun, kelimelerin söyleyemediği her şeyi anlatıyor.", e: "🤝" },
+  { t: "Sen benim favori bildirimim, en güzel mesajımsın.", e: "💌" },
+  { t: "Seninle sessizlik bile konuşuyor.", e: "🤫" },
+  { t: "Dünyanın en güzel manzarası, senin gülümsemen.", e: "🏔️" },
+  { t: "Kalbimde sana ayrılmış bir oda var; aslında tüm ev senin.", e: "🔑" },
+  { t: "Sen yokken saatler yavaş, seninleyken dakikalar hızlı.", e: "⏳" },
+  { t: "Seni her gördüğümde ilk günkü gibi heyecanlanıyorum.", e: "🫶" },
+  { t: "Hayatıma renk katan tek paletsin.", e: "🎨" },
+  { t: "Seninle paylaşılan bir kahve, en pahalı restorandan değerli.", e: "☕" },
+  { t: "Sen benim en güzel alışkanlığımsın.", e: "💗" },
+  { t: "Gözlerin bana huzuru anlatıyor.", e: "🌿" },
+  { t: "Seninle büyümek, hayatın en güzel macerası.", e: "🌱" },
+  { t: "Her 'iyi geceler' mesajın, yastığımın altına koyduğum bir hazine.", e: "🌜" },
+  { t: "Sen olmasan bile seni düşünmek güzel.", e: "💭" },
+  { t: "Seni sevmek kolay, sensiz olmak imkânsız.", e: "🔥" },
+  { t: "Dünyanın gürültüsünde sen benim sessiz limanımsın.", e: "⚓" },
+  { t: "Seninle her mevsim ilkbahar.", e: "🌼" },
+  { t: "Kalbim pusula olsa, iğnesi hep seni gösterir.", e: "🧭" },
+  { t: "Sen benim en sevdiğim 'biz' hikâyemsin.", e: "📚" },
+  { t: "Gülüşünü düşündükçe içim ısınıyor.", e: "☀️" },
+  { t: "Seninle her yol kısalıyor, her yük hafifliyor.", e: "🛤️" },
+  { t: "Hayatım bir şarkıysa, sen nakaratısın.", e: "🎵" },
+  { t: "Sana sarılmak, evrenin en güzel fizik deneyimi.", e: "🧲" },
+  { t: "Seninle vakit geçirmek, zamanı en verimli kullanma şeklim.", e: "⏰" },
+  { t: "Sen benim planlarımdaki tek sabit değişken.", e: "📐" },
+  { t: "Adını duymak bile yüzüme gülümseme yerleştiriyor.", e: "😊" },
+  { t: "Seni seviyorum, bu cümle her gün yeni gibi geliyor.", e: "💘" },
+  { t: "Birlikte uyuduğumuz geceler, en derin uykularım.", e: "😴" },
+  { t: "Seninle tartışmak bile güzel, çünkü barışmak var.", e: "🕊️" },
+  { t: "Gözlerindeki ışık, karanlık gecelerde yolumu buluyor.", e: "🔦" },
+  { t: "Sen benim en güzel 'günaydın' sebebimsin.", e: "🌤️" },
+  { t: "Yüreğim seni tanıdığından beri daha yüksek sesle atıyor.", e: "💓" },
+  { t: "Seni düşünürken çay soğuyor, umurumda değil.", e: "🫖" },
+  { t: "Seninle her fotoğraf, çerçevelenecek bir anı.", e: "📸" },
+  { t: "Benim için dünyanın sekizinci harikasısın.", e: "🗺️" },
+  { t: "Seninle olmak, evde olmak demek.", e: "🏠" },
+  { t: "Ellerini tuttuğumda her şey yerli yerine oturuyor.", e: "🫱🫲" },
+  { t: "Sana âşık olmak, yaptığım en akıllıca şey.", e: "🧠" },
+  { t: "Her gün seni yeniden keşfediyorum.", e: "🔍" },
+  { t: "Seninle paylaştığım her şey iki kat güzel.", e: "✌️" },
+  { t: "Sen benim en güzel bahar rüzgârımsın.", e: "🍃" },
+  { t: "Yüzündeki gülümseme, benim süper gücüm.", e: "⚡" },
+  { t: "Seni beklemek bile güzel bir his.", e: "⌛" },
+  { t: "Seninle her akşam yıldızlar daha parlak.", e: "⭐" },
+  { t: "Kalbime dokunduğun her an, yeni bir başlangıç.", e: "🌀" },
+  { t: "Sevgin, içtiğim en güzel ilaç.", e: "💊" },
+  { t: "Seninle geçen her saniye, hatıra defterimin en güzel sayfası.", e: "📝" },
+  { t: "Seni sevmek benim günlük rutinimin en güzel parçası.", e: "🩷" },
+  { t: "Kokun, dünyanın en güzel parfümü.", e: "🌺" },
+  { t: "Seninle her zorluk, birlikte aşılacak bir macera.", e: "⛰️" },
+  { t: "Sana her baktığımda şanslı olduğumu hatırlıyorum.", e: "🍀" },
+  { t: "Varlığın, hayatıma eklenen en değerli satır.", e: "✍️" },
+  { t: "Seninle geçirdiğim her gün, ömrümün bonusu.", e: "🎰" },
+  { t: "Gülüşün bulaşıcı; ama bu salgından şikâyetçi değilim.", e: "😷" },
+  { t: "Sen benim en güzel motivasyon kaynağımsın.", e: "🚀" },
+  { t: "Seninle her şey daha anlamlı, daha canlı, daha gerçek.", e: "🌈" },
+  { t: "Seni tanımadan önce de yaşıyordum ama şimdi gerçekten yaşıyorum.", e: "🔋" },
+  { t: "Sen benim en büyük keşfimsin.", e: "🔭" },
+  { t: "Seninle geçen zaman, yatırım yapılabilecek en iyi varlık.", e: "📈" },
+  { t: "Seni düşünmek, meditasyondan daha huzur verici.", e: "🧘" },
+  { t: "Birlikte güldüğümüz anlara hiçbir hazine değişilmez.", e: "👑" },
+  { t: "Sana olan sevgim, evrendeki en güçlü kuvvet.", e: "🌌" },
+  { t: "Sensiz bir gün bile uzun, seninle bir ömür kısa.", e: "♾️" },
+  { t: "Sen varken her yer cennet, her an şimdi.", e: "🌴" },
+  { t: "Kalp atışlarım senin adını mors alfabesiyle yazıyor.", e: "💖" },
+  { t: "Seninle tanıştığım gün, takvimimdeki en önemli tarih.", e: "📅" },
+  { t: "Gülümsemen, gördüğüm en güzel eğri.", e: "📊" },
+  { t: "Sen benim favorilerime sabitlenmiş tek kişisin.", e: "📌" },
+  { t: "Seninle her yemek, michelin yıldızlı.", e: "🍽️" },
+  { t: "Seni sevmek, kalbimin ana işlevi.", e: "🫀" },
+  { t: "Her 'seni seviyorum' dediğimde, ilk defa söylüyormuş gibi hissediyorum.", e: "🥰" },
+  { t: "Sen benim hayatımdaki en güzel sabit.", e: "⚛️" },
+  { t: "Seninle her yağmur romantik, her güneş muhteşem.", e: "🌦️" },
+  { t: "Birlikte olduğumuz her ân, bir başyapıt.", e: "🖼️" },
+  { t: "Sana olan sevgim, pi sayısı gibi: sonsuz ve tekrarsız.", e: "🔢" },
+  { t: "Sen benim en güzel antioksidanımsın; yanımda her şey taze.", e: "🧬" },
+  { t: "Seninle her cumartesi sabahı, haftanın ödülü.", e: "🛏️" },
+  { t: "Kalbim senin için her gün yeni bir sayfa açıyor.", e: "📓" },
+  { t: "Sen benim en sevdiğim 'iyi ki'msin.", e: "🙏" },
+  { t: "Seninle paylaştığım sessizlik, bin konuşmadan değerli.", e: "🤍" },
+  { t: "Sana her dokunuşum bir teşekkür, her bakışım bir itiraf.", e: "👁️" },
+  { t: "Varlığın, en karanlık günlerimi aydınlatan fener.", e: "🏮" },
+  { t: "Seninle büyümek istiyorum; yaşlanmak değil, birlikte derinleşmek.", e: "🌳" },
+  { t: "Seni sevmek, yaptığım en cesur ve en kolay şey aynı anda.", e: "🦁" },
+  { t: "Birlikte olduğumuz her gün, kendi küçük bayramımız.", e: "🎉" },
+  { t: "Seninle her müzik daha güzel, her film daha etkileyici.", e: "🎧" },
+  { t: "Sen benim hayatımın en tatlı denklemisin.", e: "➕" },
+  { t: "Gözlerinde gördüğüm sevgi, bildiğim en saf element.", e: "💠" },
+  { t: "Seninle olmak, her gün yeniden âşık olmak demek.", e: "💝" },
+  { t: "Seni düşünmeden geçen bir saatim yok.", e: "🕐" },
+  { t: "Sen benim en güzel alışkanlığım, en tatlı bağımlılığım.", e: "🧁" },
+  { t: "Seninle her yürüyüş, dünyanın en güzel rotası.", e: "👫" },
+  { t: "Seni tanıdıktan sonra şansın ne olduğunu anladım.", e: "🎲" },
+  { t: "Sen benim küçük mucizemin büyük hali.", e: "🪄" },
+  { t: "Seninle her kahkaha, kalbime yazılan bir nota.", e: "🎼" },
+  { t: "Sevgin, dokunduğu her şeyi altına çeviren bir simya.", e: "⚗️" },
+  { t: "Seni seviyorum. Basit, net, sonsuz.", e: "♥️" },
+  { t: "Seninle geçirdiğim her dakika, hayatımın highlight'ı.", e: "🌟" },
+  { t: "Sen benim en güzel 'evet'imsin.", e: "💍" },
+  { t: "Aşk bir denklemse, sen hem sorusu hem cevabısın.", e: "∞" },
+  { t: "Kokunu içime çektiğimde dünya bir an duruyor.", e: "🌹" },
+  { t: "Seni sevmek, evrenin bana verdiği en güzel görev.", e: "🌠" },
+  { t: "Birlikte olduğumuz sürece hiçbir gün sıradan değil.", e: "🎭" },
+  { t: "Sen, hayatımın en güzel bölümünün başrol oyuncususun.", e: "🎬" },
+  { t: "Seninle nefes almak bile farklı; daha derin, daha huzurlu.", e: "🫁" },
+  { t: "Sana sarılmak, dünyanın en etkili terapisi.", e: "🤗" },
+  { t: "Seni her gün biraz daha çok seviyorum; bu artış üstel, doğrusal değil.", e: "📉" },
+  { t: "Hayatımın en doğru cevabı sensin.", e: "✅" },
+  { t: "Gözlerinde kaybolup yolumu bulmak, en sevdiğim paradoks.", e: "🌀" },
+  { t: "Seninle her mevsim ayrı güzel; ama favorim 'birlikte' mevsimi.", e: "🍂" },
+  { t: "Sevgimiz bir bileşik gibi: ayrı elementlerden oluştu ama birlikte bambaşka.", e: "⚗️" },
+  { t: "Sen benim en güzel rastlantım, en bilinçli tercihim.", e: "🎯" },
+  { t: "Seni düşünmek beynime serotonin salgılatıyor; bilimsel olarak mutluluk kaynağımsın.", e: "🧪" },
+  { t: "Seninle her gün yeni bir sayfa, her an yeni bir cümle.", e: "🖊️" },
+  { t: "Kalbimdeki en güzel ritim, seninle aynı anda atışımız.", e: "💞" },
+  { t: "Sana bakarken zamanın göreceli olduğunu anlıyorum; bir saniye sonsuzluk gibi güzel.", e: "⏱️" },
+  { t: "Sen benim en sıcak battaniyem, en yumuşak yastığımsın.", e: "🛌" },
+  { t: "Seninle birlikte olmak, hayatın bonus seviyesi.", e: "🎮" },
+  { t: "Seni tanımadan önceki ben, eksik bir puzzle gibiymiş.", e: "🧩" },
+  { t: "Dudaklarındaki gülümseme, okuduğum en güzel kitap.", e: "📕" },
+  { t: "Seni seviyorum; bu üç kelime, bildiğim en güçlü formül.", e: "🔬" },
+  { t: "Seninle geçen her yıl, öncekinden daha güzel.", e: "🎂" },
+  { t: "Sen benim hayatımdaki en tatlı sabit, en güzel değişken.", e: "💛" },
+  { t: "Sana olan aşkım yerçekimi gibi: görünmez ama her şeyi bir arada tutuyor.", e: "🌍" },
+  { t: "Birlikte gülmek, bildiğim en iyi ilaç.", e: "💊" },
+  { t: "Seninle olmak istemek değil, ihtiyaç; nefes almak gibi.", e: "🌬️" },
+  { t: "Sen benim en güzel sabah kahvemsin.", e: "☕" },
+  { t: "Her gece seni düşünerek uyumak, günün en huzurlu anı.", e: "🌙" },
+  { t: "Sen benim hayatımın şifresisin; sensiz hiçbir şeyin kilidi açılmaz.", e: "🔐" },
+  { t: "Seni sevmek, öğrendiğim en kolay ve en derin ders.", e: "📘" },
+  { t: "Seninle her gün 14 Şubat.", e: "🩵" },
+  { t: "Evrendeki entropi artsa da, seninle olan düzenim bozulmaz.", e: "🔮" },
+  { t: "Gülüşün, kaosu bile düzene sokar.", e: "🌻" },
+  { t: "Seni tanıdığıma şükrediyorum; her gün, her an.", e: "🙏" },
+  { t: "Seninle her karanlık aydınlık, her soğuk sıcak.", e: "🕯️" },
+  { t: "Seni sevmek, kalbimin ana işlevi.", e: "❤️‍🔥" },
+  { t: "Seninle hayat; soundtrack'i, renkleri ve finali güzel bir film.", e: "🎞️" },
+  { t: "Sen, benim sonsuzluk kavramına en yakın gerçeğimsin.", e: "♾️" },
+  { t: "Seni her gün seçiyorum; bu seçim hiç bu kadar kolay olmamıştı.", e: "💜" }
+];
+
+function getDayOfYear() {
+  var now = new Date();
+  var start = new Date(now.getFullYear(), 0, 0);
+  var diff = now - start;
+  return Math.floor(diff / 86400000);
+}
+
+function formatDate() {
+  var now = new Date();
+  var months = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
+  var days = ["Pazar","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi"];
+  return days[now.getDay()] + ", " + now.getDate() + " " + months[now.getMonth()] + " " + now.getFullYear();
+}
+
+// Sparkles
+for (var i = 0; i < 18; i++) {
+  var s = document.createElement("div");
+  s.className = "sparkle";
+  var size = Math.random() * 8 + 4;
+  s.style.width = size + "px";
+  s.style.height = size + "px";
+  s.style.left = Math.random() * 100 + "%";
+  s.style.top = Math.random() * 100 + "%";
+  s.style.animation = "floatUp " + (Math.random()*3+3) + "s ease-in-out " + (Math.random()*5) + "s infinite";
+  s.style.opacity = Math.random() * 0.4 + 0.1;
+  document.body.appendChild(s);
+}
+
+// Set quote
+var idx = getDayOfYear() % quotes.length;
+document.getElementById("date").textContent = formatDate();
+document.getElementById("quote").textContent = quotes[idx].t;
+document.getElementById("emoji").textContent = quotes[idx].e;
+</script>
+</body>
+</html>
